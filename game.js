@@ -6,6 +6,10 @@ const paddleWidth = 15;
 const paddleHeight = 100;
 const ballRadius = 10;
 
+// Score variables
+let leftScore = 0;
+let rightScore = 0;
+
 const leftPaddle = {
     x: 10,
     y: canvas.height / 2 - paddleHeight / 2,
@@ -48,14 +52,41 @@ function drawCircle(x, y, r, color) {
     ctx.fill();
 }
 
+function drawScore() {
+    ctx.fillStyle = "#fff";
+    ctx.font = "32px Arial";
+    ctx.textAlign = "center";
+    
+    // Draw left score (top left)
+    ctx.fillText(leftScore.toString(), canvas.width / 4, 50);
+    
+    // Draw right score (top right)
+    ctx.fillText(rightScore.toString(), 3 * canvas.width / 4, 50);
+}
+
+function drawCenterLine() {
+    ctx.strokeStyle = "#fff";
+    ctx.lineWidth = 2;
+    ctx.setLineDash([10, 10]);
+    ctx.beginPath();
+    ctx.moveTo(canvas.width / 2, 0);
+    ctx.lineTo(canvas.width / 2, canvas.height);
+    ctx.stroke();
+    ctx.setLineDash([]);
+}
+
 function draw() {
     // Clear canvas
     drawRect(0, 0, canvas.width, canvas.height, "#222");
+    // Draw center line
+    drawCenterLine();
     // Draw paddles
     drawRect(leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height, leftPaddle.color);
     drawRect(rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height, rightPaddle.color);
     // Draw ball
     drawCircle(ball.x, ball.y, ball.radius, ball.color);
+    // Draw scores
+    drawScore();
 }
 
 // Mouse control for left paddle
@@ -125,7 +156,11 @@ function update() {
     }
 
     // Score
-    if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) {
+    if (ball.x - ball.radius < 0) {
+        rightScore++;
+        resetBall();
+    } else if (ball.x + ball.radius > canvas.width) {
+        leftScore++;
         resetBall();
     }
 
