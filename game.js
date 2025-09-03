@@ -1,3 +1,7 @@
+// This is the main game logic for this cluster of badly structured code.
+// Largely a simple pong game with the player controlling the paddle on the left and the "Ai" controlling the right.
+// This is just a random commet I decided to add cause I'm bored.
+
 const canvas = document.getElementById("pong");
 const ctx = canvas.getContext("2d");
 
